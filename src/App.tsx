@@ -1,19 +1,8 @@
-import * as React from "react";
-import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-} from "@chakra-ui/react";
+import { Calendar } from "./components/Calendar";
+import { CombinedProviders } from "./providers/CombinedProviders";
 
 export const App = () => (
-  <ChakraProvider theme={theme}>
-    <Box textAlign="center" fontSize="xl">
-      <Text>hello</Text>
-    </Box>
-  </ChakraProvider>
+  <CombinedProviders>
+    <Calendar />
+  </CombinedProviders>
 );

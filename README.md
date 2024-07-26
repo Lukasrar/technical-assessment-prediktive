@@ -14,6 +14,8 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 How long you spent on the assignment.
 
+Please visit: https://github.com/Lukasrar/technical-assessment-prediktive/commits?author=Lukasrar
+
 What you like about your implementation.
 
 What you would change if you were going to do it again.
