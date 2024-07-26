@@ -43,8 +43,6 @@ interface CalendarViewProps {
 }
 
 export const CalendarView = (props: CalendarViewProps) => {
-  console.log(props.month);
-
   const Content = useMemo(() => {
     switch (props.viewMode) {
       case VIEW_MODES.DAY:

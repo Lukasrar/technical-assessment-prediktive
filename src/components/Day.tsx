@@ -1,5 +1,7 @@
-import { Flex, GridItem, Text } from "@chakra-ui/react";
+import { Box, Flex, GridItem, Text } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
+import { useMemo } from "react";
+import { useCalendarContext } from "../providers/CalendarProvider";
 
 interface DayProps {
   day: Dayjs;
@@ -7,6 +9,16 @@ interface DayProps {
 }
 
 export const Day = (props: DayProps) => {
+  const { setSelectedDay, setShowModal, savedEvents, setSelectedEvent } =
+    useCalendarContext();
+
+  const eventsForThisDay = useMemo(() => {
+    return savedEvents.filter(
+      (evt) =>
+        dayjs(evt.day).format("DD-MM-YY") === props.day.format("DD-MM-YY")
+    );
+  }, [savedEvents, props.day]);
+
   return (
     <GridItem
       border={"1px solid"}
@@ -17,7 +29,7 @@ export const Day = (props: DayProps) => {
       width={"100%"}
       height={"100%"}
     >
-      <Flex flexDirection={"column"} alignItems={"center"}>
+      <Flex flexDirection={"column"} alignItems={"center"} h={"100%"}>
         {props.rowIndex === 0 && (
           <Text fontSize={"12px"} fontWeight={"bold"} color={"gray.700"}>
             {props.day.format("ddd").toUpperCase()}
@@ -38,6 +50,33 @@ export const Day = (props: DayProps) => {
         >
           {props.day.format("DD")}
         </Text>
+
+        <Flex
+          flexDirection={"column"}
+          w={"100%"}
+          height={"100%"}
+          gap={"2px"}
+          cursor={"pointer"}
+          onClick={() => {
+            setSelectedDay(props.day);
+            setShowModal(true);
+          }}
+        >
+          {eventsForThisDay.map((event) => (
+            <Box
+              cursor={"pointer"}
+              key={event.id}
+              bg={"blue.400"}
+              borderRadius={"6px"}
+              p={"2px 5px"}
+              onClick={() => setSelectedEvent(event)}
+            >
+              <Text fontSize={"10px"} fontWeight={"bold"} color={"white"}>
+                {event.title}
+              </Text>
+            </Box>
+          ))}
+        </Flex>
       </Flex>
     </GridItem>
   );

@@ -38,8 +38,8 @@ export const CalendarHeader = () => {
     );
   };
 
-  const debouncedHandlePrevMonth = useDebounce(handlePrevMonth, 300);
-  const debouncedHandleNextMonth = useDebounce(handleNextMonth, 300);
+  const debouncedHandlePrevMonth = useDebounce(handlePrevMonth, 100);
+  const debouncedHandleNextMonth = useDebounce(handleNextMonth, 100);
 
   return (
     <Flex
@@ -55,13 +55,13 @@ export const CalendarHeader = () => {
         <Flex gap={"5px"}>
           <IconButton
             onClick={debouncedHandlePrevMonth}
-            aria-label="Search database"
+            aria-label="go back"
             icon={<ChevronLeftIcon />}
             variant={"ghost"}
           />
           <IconButton
             onClick={debouncedHandleNextMonth}
-            aria-label="Search database"
+            aria-label="go forward"
             icon={<ChevronRightIcon />}
             variant={"ghost"}
           />

@@ -1,4 +1,4 @@
-import { Box, Grid } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import React from "react";
 import { Day } from "../Day";
@@ -23,7 +23,7 @@ export const MonthView = (props: MonthViewProps) => {
       height={"100%"}
     >
       {props.month.map((row: dayjs.Dayjs[], i: number) => (
-        <React.Fragment>{renderDays(row, i)}</React.Fragment>
+        <React.Fragment key={i}>{renderDays(row, i)}</React.Fragment>
       ))}
     </Grid>
   );
