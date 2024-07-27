@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo } from "react";
+import { useCalendarContext } from "../../providers/CalendarProvider";
 import { DayView } from "./DayView";
 import { MonthView } from "./MonthView";
 import { WeekView } from "./WeekView";
@@ -43,18 +44,20 @@ interface CalendarViewProps {
 }
 
 export const CalendarView = (props: CalendarViewProps) => {
+  const { weekIndex, dayIndex } = useCalendarContext();
+
   const Content = useMemo(() => {
     switch (props.viewMode) {
       case VIEW_MODES.DAY:
-        return <DayView day={props.month[0][0]} />;
+        return <DayView day={props.month[weekIndex][dayIndex]} />;
       case VIEW_MODES.WEEK:
-        return <WeekView week={props.month[0]} />;
+        return <WeekView week={props.month[weekIndex]} />;
       case VIEW_MODES.MONTH:
         return <MonthView month={props.month} />;
       default:
         return null;
     }
-  }, [props.month, props.viewMode]);
+  }, [props.month, props.viewMode, weekIndex, dayIndex]);
 
   const uniqueKey = `${props.viewMode}-${props.month.flat().join("-")}`;
 

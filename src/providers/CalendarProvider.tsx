@@ -1,6 +1,7 @@
 import dayjs, { Dayjs } from "dayjs";
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useReducer,
@@ -12,7 +13,8 @@ import { getMonth } from "../helpers/getMonth";
 interface Event {
   title: string;
   description: string;
-  day: number;
+  startDate: string;
+  endDate: string;
   id: number;
 }
 
@@ -60,6 +62,12 @@ interface CalendarContextProps {
   dispatchEvent(action: { type: string; payload: Event }): void;
   selectedEvent: Event | null;
   setSelectedEvent(event: Event | null): void;
+  handleLeftArrow(): void;
+  handleRightArrow(): void;
+  dayIndex: number;
+  weekIndex: number;
+  setDayIndex(index: number): void;
+  setWeekIndex(index: number): void;
 }
 
 export const CalendarContext = createContext<CalendarContextProps>({
@@ -79,6 +87,13 @@ export const CalendarContext = createContext<CalendarContextProps>({
 
   selectedEvent: null,
   setSelectedEvent: (event: Event | null) => {},
+  handleLeftArrow: () => {},
+  handleRightArrow: () => {},
+  dayIndex: 0,
+  setDayIndex: (index: number) => {},
+
+  weekIndex: 0,
+  setWeekIndex: (index: number) => {},
 });
 
 export const CalendarProvider = (props: CalendarProvidersInterface) => {
@@ -89,11 +104,52 @@ export const CalendarProvider = (props: CalendarProvidersInterface) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 
+  const [dayIndex, setDayIndex] = useState(0);
+  const [weekIndex, setWeekIndex] = useState(0);
+
   const [savedEvents, dispatchEvent] = useReducer(
     savedEventsReducer,
     [],
     getInitialEvents
   );
+
+  const handleRightArrow = useCallback(() => {
+    if (viewMode === VIEW_MODES.DAY) {
+      const daysInWeek = currentMonth[weekIndex].length;
+
+      if (dayIndex < daysInWeek - 1) {
+        setDayIndex(dayIndex + 1);
+      } else if (weekIndex < currentMonth.length - 1) {
+        setDayIndex(0);
+        setWeekIndex(weekIndex + 1);
+      }
+    }
+
+    if (viewMode === VIEW_MODES.WEEK) {
+    }
+
+    if (viewMode === VIEW_MODES.MONTH) {
+      setMonthIndex(monthIndex + 1);
+    }
+  }, [viewMode, dayIndex, currentMonth, weekIndex, monthIndex]);
+
+  const handleLeftArrow = useCallback(() => {
+    if (viewMode === VIEW_MODES.DAY) {
+      if (dayIndex > 0) {
+        setDayIndex(dayIndex - 1);
+      } else if (weekIndex > 0) {
+        setDayIndex(currentMonth[weekIndex - 1].length - 1);
+        setWeekIndex(weekIndex - 1);
+      }
+    }
+
+    if (viewMode === VIEW_MODES.WEEK) {
+    }
+
+    if (viewMode === VIEW_MODES.MONTH) {
+      setMonthIndex(monthIndex - 1);
+    }
+  }, [viewMode, dayIndex, currentMonth, weekIndex, monthIndex]);
 
   useEffect(() => {
     localStorage.setItem("events", JSON.stringify(savedEvents));
@@ -122,6 +178,12 @@ export const CalendarProvider = (props: CalendarProvidersInterface) => {
         dispatchEvent,
         selectedEvent,
         setSelectedEvent,
+        handleRightArrow,
+        handleLeftArrow,
+        dayIndex,
+        weekIndex,
+        setDayIndex,
+        setWeekIndex,
       }}
     >
       {props.children}

@@ -15,7 +15,7 @@ export const Day = (props: DayProps) => {
   const eventsForThisDay = useMemo(() => {
     return savedEvents.filter(
       (evt) =>
-        dayjs(evt.day).format("DD-MM-YY") === props.day.format("DD-MM-YY")
+        dayjs(evt.startDate).format("DD-MM-YY") === props.day.format("DD-MM-YY")
     );
   }, [savedEvents, props.day]);
 
@@ -28,8 +28,13 @@ export const Day = (props: DayProps) => {
       flexDirection={"column"}
       width={"100%"}
       height={"100%"}
+      cursor={"pointer"}
+      onClick={() => {
+        setSelectedDay(props.day);
+        setShowModal(true);
+      }}
     >
-      <Flex flexDirection={"column"} alignItems={"center"} h={"100%"}>
+      <Flex flexDirection={"column"} alignItems={"center"}>
         {props.rowIndex === 0 && (
           <Text fontSize={"12px"} fontWeight={"bold"} color={"gray.700"}>
             {props.day.format("ddd").toUpperCase()}
@@ -51,17 +56,7 @@ export const Day = (props: DayProps) => {
           {props.day.format("DD")}
         </Text>
 
-        <Flex
-          flexDirection={"column"}
-          w={"100%"}
-          height={"100%"}
-          gap={"2px"}
-          cursor={"pointer"}
-          onClick={() => {
-            setSelectedDay(props.day);
-            setShowModal(true);
-          }}
-        >
+        <Flex flexDirection={"column"} gap={"2px"}>
           {eventsForThisDay.map((event) => (
             <Box
               cursor={"pointer"}

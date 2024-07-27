@@ -19,13 +19,14 @@ export const CreateEditEventModal = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  console.log(selectedDay.format("dddd, MMMM DD"));
-
   const handleOnCreate = useCallback(() => {
+    if (!title || !description) return "";
+
     const newEvent = {
       title,
       description,
-      day: selectedDay.valueOf(),
+      startDate: selectedDay.format("YYYY-MM-DD"),
+      endDate: selectedDay.add(1, "day").format("YYYY-MM-DD"),
       id: selectedEvent ? selectedEvent.id : Date.now(),
     };
 
@@ -36,6 +37,9 @@ export const CreateEditEventModal = () => {
     }
 
     setShowModal(false);
+
+    setTitle("");
+    setDescription("");
   }, [
     selectedEvent,
     selectedDay,
@@ -86,7 +90,10 @@ export const CreateEditEventModal = () => {
             onChange={(e) => setTitle(e.target.value)}
           />
 
-          <Flex>{selectedDay.format("dddd, MMMM DD")}</Flex>
+          <Flex>Start Date: {selectedDay.format("dddd, MMMM DD")}</Flex>
+          <Flex>
+            End Date: {selectedDay.add(1, "day").format("dddd, MMMM DD")}
+          </Flex>
 
           <Input
             placeholder={"Add a description"}

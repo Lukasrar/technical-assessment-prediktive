@@ -17,18 +17,19 @@ import { useCalendarContext } from "../providers/CalendarProvider";
 import dayjs from "dayjs";
 import { VIEW_MODES, VIEW_MODES_MAP } from "./CalendarView/CalendarView";
 import useDebounce from "../helpers/useDebounce";
+import { useCallback } from "react";
 
 export const CalendarHeader = () => {
-  const { monthIndex, setMonthIndex, viewMode, setViewMode } =
-    useCalendarContext();
-
-  const handlePrevMonth = () => {
-    setMonthIndex(monthIndex - 1);
-  };
-
-  const handleNextMonth = () => {
-    setMonthIndex(monthIndex + 1);
-  };
+  const {
+    monthIndex,
+    setMonthIndex,
+    viewMode,
+    setViewMode,
+    handleLeftArrow,
+    handleRightArrow,
+    setDayIndex,
+    setWeekIndex,
+  } = useCalendarContext();
 
   const handleReset = () => {
     setMonthIndex(
@@ -38,8 +39,18 @@ export const CalendarHeader = () => {
     );
   };
 
-  const debouncedHandlePrevMonth = useDebounce(handlePrevMonth, 100);
-  const debouncedHandleNextMonth = useDebounce(handleNextMonth, 100);
+  const debouncedHandlePrevMonth = useDebounce(handleLeftArrow, 100);
+  const debouncedHandleNextMonth = useDebounce(handleRightArrow, 100);
+
+  const handleViewModeChange = useCallback(
+    (mode: VIEW_MODES) => {
+      setViewMode(mode);
+
+      setDayIndex(0);
+      setWeekIndex(0);
+    },
+    [setDayIndex, setWeekIndex, setViewMode]
+  );
 
   return (
     <Flex
@@ -77,13 +88,13 @@ export const CalendarHeader = () => {
           {VIEW_MODES_MAP[viewMode]}
         </MenuButton>
         <MenuList>
-          <MenuItem onClick={() => setViewMode(VIEW_MODES.DAY)}>
+          <MenuItem onClick={() => handleViewModeChange(VIEW_MODES.DAY)}>
             {VIEW_MODES_MAP[VIEW_MODES.DAY]}
           </MenuItem>
-          <MenuItem onClick={() => setViewMode(VIEW_MODES.WEEK)}>
+          <MenuItem onClick={() => handleViewModeChange(VIEW_MODES.WEEK)}>
             {VIEW_MODES_MAP[VIEW_MODES.WEEK]}
           </MenuItem>
-          <MenuItem onClick={() => setViewMode(VIEW_MODES.MONTH)}>
+          <MenuItem onClick={() => handleViewModeChange(VIEW_MODES.MONTH)}>
             {VIEW_MODES_MAP[VIEW_MODES.MONTH]}
           </MenuItem>
         </MenuList>
