@@ -42,4 +42,4 @@ Given more time, I would focus on testing the rendering for different views (mon
 
 ## Final Considerations
 
-Unfortunately, I didn’t have time to implement the drag-and-drop feature and the event timeline functionality. Despite this, I am satisfied with the final result and hope you find it useful. If you have any questions or need further assistance, please feel free to reach out via email at [lukasrar@hotmail.com](mailto:lukasrar@hotmail.com) or visit my LinkedIn profile at [LinkedIn](https://www.linkedin.com/in/lukasrodrigo/).
+Unfortunately, I didn’t have time to add the drag-and-drop feature, the event timeline, or the ability to navigate forward and backward in the week and day views. Even so, I’m happy with how everything turned out and hope you find it useful. If you have any questions or need more info, feel free to email me at [lukasrar@hotmail.com](mailto:lukasrar@hotmail.com) or check out my LinkedIn profile at [LinkedIn](https://www.linkedin.com/in/lukasrodrigo/).
